@@ -12,9 +12,7 @@ densities (no MCMC, no truncation error).
 |---|---|
 | `01_simulation.R` | Simulation study (tables and figures of the simulation section). |
 | `02_nasa.R` | NASA C-MAPSS FD001 application (tables of the application section). |
-| `data/train_FD001.txt` | NASA C-MAPSS FD001 training data (NASA Ames Prognostics Data Repository, Saxena and Goebel, 2008). |
-| `outputs_simulation/` | Output of the simulation run (CSV tables, PNG figures, `sessionInfo.txt`). |
-| `outputs_nasa/` | Output of the NASA run (CSV tables, `sessionInfo.txt`). |
+| `train_FD001.txt` | NASA C-MAPSS FD001 training data (NASA Ames Prognostics Data Repository, Saxena and Goebel, 2008). |
 | `LICENSE` | MIT license. |
 
 ## Requirements
@@ -26,10 +24,10 @@ Run from the repository root:
 source("01_simulation.R")   # or: Rscript 01_simulation.R
 source("02_nasa.R")         # or: Rscript 02_nasa.R
 ```
-* Both scripts use `set.seed(2026)`. Outputs go to `outputs_simulation/` and `outputs_nasa/` (created if missing); re-running overwrites the CSV tables.
+* Both scripts use `set.seed(2026)`. Outputs go to `outputs_simulation/` and `outputs_nasa/` (created automatically); re-running overwrites the CSV tables.
 * `01_simulation.R` first checks that the lifetime pmf sums to 1 and has the closed-form mean of Poursaeed (2021); it prints `pmf check passed`.
 * Run time grows with the replication counts at the top of each script; lower them for a quick test (results then differ from the paper).
-* `02_nasa.R` needs `data/train_FD001.txt`.
+* `02_nasa.R` needs `train_FD001.txt` in the same folder.
 
 ## Simulation study (`01_simulation.R`)
 Settings: p = 0.3, δ1 = 1, δ2 = 3, n = 150, θ ∈ {0.1, 0.3, 0.5, 0.7, 0.9}; prior Beta(1,1) unless stated.
@@ -43,7 +41,7 @@ Settings: p = 0.3, δ1 = 1, δ2 = 3, n = 150, θ ∈ {0.1, 0.3, 0.5, 0.7, 0.9}; 
 | `figure1_estimates_*.png`, `figure2_running_mean_*.png` | Estimates of θ over replications and their running means (true θ = 0.5). |
 | `figure3_ET_vs_p_*.png`, `figure_survival_*.png` | E(T) as a function of p; survival curve S(t). |
 
-Figure file names contain a time stamp, so earlier files are not overwritten.
+Not all outputs are reported in the paper. Figure file names contain a time stamp, so earlier files are not overwritten.
 
 ## NASA application (`02_nasa.R`)
 Each engine is mapped to the model through the standardised residual of sensor 12 (cubic trend removed): a cycle with |z| > 1 is a shock; a shock after an inter-shock time ≤ δ1 = 1 is fatal; a shock after a time in (1, 3] is fatal if |z| > 1.5 (so θ is the probability that such a shock is severe). The lifetime of an engine is the cycle of its first fatal shock; only these 100 lifetimes are used for inference. The shock probability p is set to the observed shock rate and treated as known.
