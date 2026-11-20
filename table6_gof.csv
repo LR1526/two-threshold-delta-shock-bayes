@@ -1,0 +1,4 @@
+"check","statistic","df","p_value_or_median_p","rejection_rate_at_0.05"
+"Pearson chi-square",13.5090467324549,11,0.26135914755524,NA
+"Split predictive check, T = sd",NA,NA,0.48,0.03
+"Split predictive check, T = 90th percentile",NA,NA,0.46,0.05
